@@ -75,15 +75,70 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class ScreenOne extends StatelessWidget {
+class ScreenOne extends StatefulWidget {
   const ScreenOne({super.key});
 
   @override
+  State<ScreenOne> createState() => _ScreenOneState();
+}
+
+class _ScreenOneState extends State<ScreenOne> {
+  bool _showDog = false;
+  Offset _dogPosition = const Offset(100, 100);
+
+  void _toggleDog() {
+    setState(() {
+      _showDog = true;
+    });
+  }
+
+  void _updateDogPosition(PointerEvent event) {
+    setState(() {
+      _dogPosition = event.position;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Screen One',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return MouseRegion(
+      onHover: _updateDogPosition,
+      child: Stack(
+        children: [
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Jackson Cogan',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Screen One',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            left: MediaQuery.of(context).size.width / 2 - 50,
+            child: ElevatedButton(
+              onPressed: _toggleDog,
+              child: const Text('Add Dog'),
+            ),
+          ),
+          if (_showDog)
+            Positioned(
+              left: _dogPosition.dx - 50,
+              top: _dogPosition.dy - 50,
+              child: Image.asset(
+                'images/dog.gif', 
+                width: 100,
+                height: 100,
+              ),
+            ),
+        ],
       ),
     );
   }
