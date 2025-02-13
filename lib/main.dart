@@ -1,3 +1,4 @@
+import 'dart:math'; // Import dart:math for random number generation
 import 'package:flutter/material.dart';
 
 void main() {
@@ -83,63 +84,75 @@ class ScreenOne extends StatefulWidget {
 }
 
 class _ScreenOneState extends State<ScreenOne> {
-  bool _showDog = false;
-  Offset _dogPosition = const Offset(100, 100);
+  List<Offset> _dogPositions = [];
+  List<String> _dogImages = [];
 
-  void _toggleDog() {
-    setState(() {
-      _showDog = true;
-    });
-  }
+  // List of image files in the images folder
+  final List<String> _availableDogImages = [
+    'images/dog.png', 
+    'images/boston.png', 
+    'images/husky.png', 
+    'images/dog4.png'
+    
+  ];
 
-  void _updateDogPosition(PointerEvent event) {
+  void _addDog() {
     setState(() {
-      _dogPosition = event.position;
+      // Generate a random position
+      Offset randomPosition = Offset(
+        Random().nextDouble() * (MediaQuery.of(context).size.width - 100), // Random x position
+        Random().nextDouble() * (MediaQuery.of(context).size.height - 100), // Random y position
+      );
+
+      // Randomly select a dog image
+      String randomImage = _availableDogImages[Random().nextInt(_availableDogImages.length)];
+
+      // Add the new dog’s position and image to the list
+      _dogPositions.add(randomPosition);
+      _dogImages.add(randomImage);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: _updateDogPosition,
-      child: Stack(
-        children: [
-          const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Jackson Cogan',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Screen One',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 50,
-            left: MediaQuery.of(context).size.width / 2 - 50,
-            child: ElevatedButton(
-              onPressed: _toggleDog,
-              child: const Text('Add Dog'),
-            ),
-          ),
-          if (_showDog)
-            Positioned(
-              left: _dogPosition.dx - 50,
-              top: _dogPosition.dy - 50,
-              child: Image.asset(
-                'images/dog.gif', 
-                width: 100,
-                height: 100,
+    return Stack(
+      children: [
+        const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Jackson Cogan',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
+              SizedBox(height: 20),
+              Text(
+                'Screen One',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          bottom: 50,
+          left: MediaQuery.of(context).size.width / 2 - 50,
+          child: ElevatedButton(
+            onPressed: _addDog,
+            child: const Text('Add Dog'),
+          ),
+        ),
+        // Display all dogs at their respective positions
+        for (int i = 0; i < _dogPositions.length; i++)
+          Positioned(
+            left: _dogPositions[i].dx,
+            top: _dogPositions[i].dy,
+            child: Image.asset(
+              _dogImages[i],
+              width: 100,
+              height: 100,
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
