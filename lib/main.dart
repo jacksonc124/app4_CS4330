@@ -227,7 +227,9 @@ class ScreenThree extends StatefulWidget {
 class _ScreenThreeState extends State<ScreenThree> {
   List<Offset> _dogPositions = [];
   List<String> _dogImages = [];
-  Color _backgroundColor = Colors.blue; // Set background color to blue
+  List<Offset> _iconPositions = [];
+  List<IconData> _icons = [];
+  Color _backgroundColor = Colors.blue;
 
   final List<String> _availableDogImages = [
     'images/dog.png',
@@ -239,36 +241,81 @@ class _ScreenThreeState extends State<ScreenThree> {
     'images/dog9.png'
   ];
 
+  final List<IconData> _availableIcons = [
+    Icons.star,
+    Icons.favorite,
+    Icons.cake,
+    Icons.directions_car,
+    Icons.sports_basketball,
+    Icons.computer,
+    Icons.headset,
+  ];
+
   void _addDog() {
     setState(() {
-      // Generate a random position
       Offset randomPosition = Offset(
-        Random().nextDouble() *
-            (MediaQuery.of(context).size.width - 100), // Random x position
-        Random().nextDouble() *
-            (MediaQuery.of(context).size.height - 100), // Random y position
+        Random().nextDouble() * (MediaQuery.of(context).size.width - 100),
+        Random().nextDouble() * (MediaQuery.of(context).size.height - 100),
       );
 
-      // Randomly select a dog image
       String randomImage =
           _availableDogImages[Random().nextInt(_availableDogImages.length)];
 
-      // Add the new dog’s position and image to the list
       _dogPositions.add(randomPosition);
       _dogImages.add(randomImage);
+    });
+  }
+
+  void _addIcon() {
+    setState(() {
+      Offset randomPosition = Offset(
+        Random().nextDouble() * (MediaQuery.of(context).size.width - 50),
+        Random().nextDouble() * (MediaQuery.of(context).size.height - 50),
+      );
+
+      IconData randomIcon =
+          _availableIcons[Random().nextInt(_availableIcons.length)];
+
+      _iconPositions.add(randomPosition);
+      _icons.add(randomIcon);
+    });
+  }
+
+  void _clearScreen() {
+    setState(() {
+      _dogPositions.clear();
+      _dogImages.clear();
+      _iconPositions.clear();
+      _icons.clear();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _backgroundColor, // Blue background color
+      backgroundColor: _backgroundColor,
       body: Stack(
         children: [
-          const Center(
+          Center(
             child: Text(
               'Kyler Martin-Yeboah',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+                letterSpacing: 3,
+                fontFamily: "SuperFont",
+                shadows: [
+                  Shadow(
+                      offset: Offset(3, 3),
+                      blurRadius: 5,
+                      color: Colors.black.withOpacity(0.7)),
+                  Shadow(
+                      offset: Offset(-3, -3),
+                      blurRadius: 5,
+                      color: Colors.black.withOpacity(0.5)),
+                ],
+              ),
             ),
           ),
           Positioned(
@@ -279,7 +326,22 @@ class _ScreenThreeState extends State<ScreenThree> {
               child: const Text('Add Dog'),
             ),
           ),
-          // Display all dogs at their respective positions
+          Positioned(
+            bottom: 240,
+            left: MediaQuery.of(context).size.width / 2 - 50,
+            child: ElevatedButton(
+              onPressed: _addIcon,
+              child: const Text('Add Icon'),
+            ),
+          ),
+          Positioned(
+            bottom: 200,
+            left: MediaQuery.of(context).size.width / 2 - 60,
+            child: ElevatedButton(
+              onPressed: _clearScreen,
+              child: const Text('Clear Screen'),
+            ),
+          ),
           for (int i = 0; i < _dogPositions.length; i++)
             Positioned(
               left: _dogPositions[i].dx,
@@ -288,6 +350,26 @@ class _ScreenThreeState extends State<ScreenThree> {
                 _dogImages[i],
                 width: 100,
                 height: 100,
+              ),
+            ),
+          for (int i = 0; i < _iconPositions.length; i++)
+            Positioned(
+              left: _iconPositions[i].dx,
+              top: _iconPositions[i].dy,
+              child: Icon(
+                _icons[i],
+                size: 50,
+                color: Colors.white,
+                shadows: [
+                  Shadow(
+                      offset: Offset(4, 4),
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.7)),
+                  Shadow(
+                      offset: Offset(-2, -2),
+                      blurRadius: 4,
+                      color: Colors.black.withOpacity(0.5)),
+                ],
               ),
             ),
         ],
