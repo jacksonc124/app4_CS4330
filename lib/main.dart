@@ -127,6 +127,14 @@ class _ScreenOneState extends State<ScreenOne> {
     });
   }
 
+  void _reset() {
+    setState(() {
+      _dogPositions.clear(); // Clear all dog positions
+      _dogImages.clear(); // Clear all dog images
+      _backgroundColor = Colors.white; // Reset background color to white
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,18 +147,14 @@ class _ScreenOneState extends State<ScreenOne> {
               children: [
                 Text(
                   'Jackson Cogan',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0), letterSpacing: 10, fontFamily: "SuperFont", ),
                 ),
                 SizedBox(height: 20),
-                Text(
-                  'Screen One',
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
               ],
             ),
           ),
           Positioned(
-            bottom: 50,
+            bottom: 280,
             left: MediaQuery.of(context).size.width / 2 - 50,
             child: ElevatedButton(
               onPressed: _addDog,
@@ -158,11 +162,19 @@ class _ScreenOneState extends State<ScreenOne> {
             ),
           ),
           Positioned(
-            bottom: 90,
-            left: MediaQuery.of(context).size.width / 2 - 110,
+            bottom: 240,
+            left: MediaQuery.of(context).size.width / 2 - 105,
             child: ElevatedButton(
               onPressed: _changeBackgroundColor, // Change background color
               child: const Text('Change Background Color'),
+            ),
+          ),
+          Positioned(
+            bottom: 200,
+            left: MediaQuery.of(context).size.width / 2 - 40,
+            child: ElevatedButton(
+              onPressed: _reset, // Reset the screen
+              child: const Text('Reset'),
             ),
           ),
           // Display all dogs at their respective positions
