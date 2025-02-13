@@ -90,7 +90,7 @@ class _ScreenOneState extends State<ScreenOne> {
 
   // List of image files in the images folder
   final List<String> _availableDogImages = [
-    'images/dog.png', 
+    'images/dog.png',
     'images/dog4.png',
     'images/dog5.png',
     'images/dog6.png',
@@ -103,12 +103,15 @@ class _ScreenOneState extends State<ScreenOne> {
     setState(() {
       // Generate a random position
       Offset randomPosition = Offset(
-        Random().nextDouble() * (MediaQuery.of(context).size.width - 100), // Random x position
-        Random().nextDouble() * (MediaQuery.of(context).size.height - 100), // Random y position
+        Random().nextDouble() *
+            (MediaQuery.of(context).size.width - 100), // Random x position
+        Random().nextDouble() *
+            (MediaQuery.of(context).size.height - 100), // Random y position
       );
 
       // Randomly select a dog image
-      String randomImage = _availableDogImages[Random().nextInt(_availableDogImages.length)];
+      String randomImage =
+          _availableDogImages[Random().nextInt(_availableDogImages.length)];
 
       // Add the new dog’s position and image to the list
       _dogPositions.add(randomPosition);
@@ -147,7 +150,13 @@ class _ScreenOneState extends State<ScreenOne> {
               children: [
                 Text(
                   'Jackson Cogan',
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0), letterSpacing: 10, fontFamily: "SuperFont", ),
+                  style: TextStyle(
+                    fontSize: 60,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 0, 0, 0),
+                    letterSpacing: 10,
+                    fontFamily: "SuperFont",
+                  ),
                 ),
                 SizedBox(height: 20),
               ],
@@ -208,15 +217,80 @@ class ScreenTwo extends StatelessWidget {
   }
 }
 
-class ScreenThree extends StatelessWidget {
+class ScreenThree extends StatefulWidget {
   const ScreenThree({super.key});
 
   @override
+  State<ScreenThree> createState() => _ScreenThreeState();
+}
+
+class _ScreenThreeState extends State<ScreenThree> {
+  List<Offset> _dogPositions = [];
+  List<String> _dogImages = [];
+  Color _backgroundColor = Colors.blue; // Set background color to blue
+
+  final List<String> _availableDogImages = [
+    'images/dog.png',
+    'images/dog4.png',
+    'images/dog5.png',
+    'images/dog6.png',
+    'images/dog7.png',
+    'images/dog8.png',
+    'images/dog9.png'
+  ];
+
+  void _addDog() {
+    setState(() {
+      // Generate a random position
+      Offset randomPosition = Offset(
+        Random().nextDouble() *
+            (MediaQuery.of(context).size.width - 100), // Random x position
+        Random().nextDouble() *
+            (MediaQuery.of(context).size.height - 100), // Random y position
+      );
+
+      // Randomly select a dog image
+      String randomImage =
+          _availableDogImages[Random().nextInt(_availableDogImages.length)];
+
+      // Add the new dog’s position and image to the list
+      _dogPositions.add(randomPosition);
+      _dogImages.add(randomImage);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Screen Three',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Scaffold(
+      backgroundColor: _backgroundColor, // Blue background color
+      body: Stack(
+        children: [
+          const Center(
+            child: Text(
+              'Kyler Martin-Yeboah',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Positioned(
+            bottom: 280,
+            left: MediaQuery.of(context).size.width / 2 - 50,
+            child: ElevatedButton(
+              onPressed: _addDog,
+              child: const Text('Add Dog'),
+            ),
+          ),
+          // Display all dogs at their respective positions
+          for (int i = 0; i < _dogPositions.length; i++)
+            Positioned(
+              left: _dogPositions[i].dx,
+              top: _dogPositions[i].dy,
+              child: Image.asset(
+                _dogImages[i],
+                width: 100,
+                height: 100,
+              ),
+            ),
+        ],
       ),
     );
   }
