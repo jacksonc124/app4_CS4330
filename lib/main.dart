@@ -364,7 +364,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                   Shadow(
                       offset: Offset(4, 4),
                       blurRadius: 4,
-                      color: Colors.black.withOpacity(0.7)),
+                      color: Colors.yellowAccent.withOpacity(0.7)),
                   Shadow(
                       offset: Offset(-2, -2),
                       blurRadius: 4,
