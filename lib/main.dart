@@ -303,7 +303,7 @@ class _ScreenThreeState extends State<ScreenThree> {
                 fontSize: 50,
                 fontWeight: FontWeight.bold,
                 color: Colors.orange,
-                letterSpacing: 3,
+                letterSpacing: 8,
                 fontFamily: "SuperFont",
                 shadows: [
                   Shadow(
@@ -313,7 +313,8 @@ class _ScreenThreeState extends State<ScreenThree> {
                   Shadow(
                       offset: Offset(-3, -3),
                       blurRadius: 2,
-                      color: Colors.black.withOpacity(0.5)),
+                      color: const Color.fromARGB(141, 135, 3, 229)
+                          .withOpacity(0.5)),
                 ],
               ),
             ),
