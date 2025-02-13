@@ -86,14 +86,17 @@ class ScreenOne extends StatefulWidget {
 class _ScreenOneState extends State<ScreenOne> {
   List<Offset> _dogPositions = [];
   List<String> _dogImages = [];
+  Color _backgroundColor = Colors.white; // Default background color
 
   // List of image files in the images folder
   final List<String> _availableDogImages = [
     'images/dog.png', 
-    'images/boston.png', 
-    'images/husky.png', 
-    'images/dog4.png'
-    
+    'images/dog4.png',
+    'images/dog5.png',
+    'images/dog6.png',
+    'images/dog7.png',
+    'images/dog8.png',
+    'images/dog9.png'
   ];
 
   void _addDog() {
@@ -113,46 +116,68 @@ class _ScreenOneState extends State<ScreenOne> {
     });
   }
 
+  void _changeBackgroundColor() {
+    setState(() {
+      _backgroundColor = Color.fromRGBO(
+        Random().nextInt(256), // Random red value
+        Random().nextInt(256), // Random green value
+        Random().nextInt(256), // Random blue value
+        1.0, // Opacity (1.0 is fully opaque)
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Jackson Cogan',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Screen One',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          bottom: 50,
-          left: MediaQuery.of(context).size.width / 2 - 50,
-          child: ElevatedButton(
-            onPressed: _addDog,
-            child: const Text('Add Dog'),
-          ),
-        ),
-        // Display all dogs at their respective positions
-        for (int i = 0; i < _dogPositions.length; i++)
-          Positioned(
-            left: _dogPositions[i].dx,
-            top: _dogPositions[i].dy,
-            child: Image.asset(
-              _dogImages[i],
-              width: 100,
-              height: 100,
+    return Scaffold(
+      backgroundColor: _backgroundColor, // Apply random background color
+      body: Stack(
+        children: [
+          const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Jackson Cogan',
+                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Screen One',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
-      ],
+          Positioned(
+            bottom: 50,
+            left: MediaQuery.of(context).size.width / 2 - 50,
+            child: ElevatedButton(
+              onPressed: _addDog,
+              child: const Text('Add Dog'),
+            ),
+          ),
+          Positioned(
+            bottom: 90,
+            left: MediaQuery.of(context).size.width / 2 - 110,
+            child: ElevatedButton(
+              onPressed: _changeBackgroundColor, // Change background color
+              child: const Text('Change Background Color'),
+            ),
+          ),
+          // Display all dogs at their respective positions
+          for (int i = 0; i < _dogPositions.length; i++)
+            Positioned(
+              left: _dogPositions[i].dx,
+              top: _dogPositions[i].dy,
+              child: Image.asset(
+                _dogImages[i],
+                width: 100,
+                height: 100,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
